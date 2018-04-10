@@ -1,10 +1,24 @@
 <launch>
 
+  <!-- Nodelet manager for this pipeline -->
+  <node pkg="nodelet" type="nodelet" args="manager" name="record_player_manager" output="screen"/>
+
+  <node pkg="elevation_mapping_demos" type="nav_to_odom_pose_publisher.py" name="msg_changer"/>
+
+  <!-- For TUM dataset -->
+  <node pkg="nodelet" type="nodelet" name="cloudify"
+    args="load depth_image_proc/point_cloud_xyzrgb record_player_manager --no-bond">
+    <remap from="rgb/camera_info" to="/camera/depth/camera_info" />
+    <remap from="rgb/image_rect_color" to="/camera/rgb/image_color" />
+    <remap from="depth_registered/image_rect" to="/camera/depth/image" />
+    <remap from="depth_registered/points" to="/points" />
+  </node>
+
   <!-- Elevation mapping node -->
   <node pkg="elevation_mapping" type="elevation_mapping" name="elevation_mapping" output="screen">
     <rosparam command="load" file="$(find elevation_mapping_demos)/config/robots/simple_demo_robot.yaml" />
     <rosparam command="load" file="$(find elevation_mapping_demos)/config/elevation_maps/simple_demo_map.yaml" />
-    <rosparam command="load" file="$(find elevation_mapping)/config/sensor_processors/kinect_nguyen_et_al.yaml" />
+    <rosparam command="load" file="$(find elevation_mapping)/config/sensor_processors/hokuyo_utm-30lx.yaml" />
   </node>
 
   <!-- Launch visualizations for the resulting elevation map -->
