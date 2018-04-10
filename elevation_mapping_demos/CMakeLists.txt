@@ -39,3 +39,7 @@ install(DIRECTORY config doc launch rviz
 install(PROGRAMS scripts/ground_truth_pose_publisher.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+install(PROGRAMS scripts/nav_to_odom_pose_publisher.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
