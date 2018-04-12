@@ -11,7 +11,7 @@ def callback(newPose):
     pose = geometry_msgs.msg.PoseWithCovarianceStamped()
     # header message
     pose.header.stamp = newPose.header.stamp
-    pose.header.frame_id = "base_link"
+    pose.header.frame_id = "zed_center"
     # pose message
     pose.pose.pose.position.x = newPose.pose.pose.position.x
     pose.pose.pose.position.y = newPose.pose.pose.position.y
@@ -30,7 +30,7 @@ def main_program():
     global publisher
     rospy.init_node('nav_to_odom_pose_publisher')
 
-    subscriber = rospy.Subscriber("/pose", nav_msgs.msg.Odometry, callback)
+    subscriber = rospy.Subscriber("/odom", nav_msgs.msg.Odometry, callback)
     publisher = rospy.Publisher('/pose_g', geometry_msgs.msg.PoseWithCovarianceStamped, queue_size=10)
 
     rospy.spin()
